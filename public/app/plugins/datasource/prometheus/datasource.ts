@@ -36,19 +36,6 @@ export class PrometheusDatasource {
     this.interval = instanceSettings.jsonData.timeInterval || '15s';
   }
 
-  _request(method, url, requestId?) {
-    var options: any = {
-      url: this.url + url,
-      method: method,
-      requestId: requestId,
-    };
-
-    if (this.basicAuth || this.withCredentials) {
-      options.withCredentials = true;
-    }
-
-    if (this.basicAuth) {
-      options.headers = {
         Authorization: this.basicAuth,
       };
     }
