@@ -36,10 +36,23 @@ export class PrometheusDatasource {
     this.interval = instanceSettings.jsonData.timeInterval || '15s';
   }
 
-        Authorization: this.basicAuth,
+  _request(method, url, requestId?) {
+    var options: any = {
+      url: this.url + url,
+      method: method,
+      requestId: requestId,
+    };
+
+    if (this.basicAuth || this.withCredentials) {
+      options.withCredentials = true;
+    }
+
+    if (this.basicAuth) {
+      options.headers = {
+        "Authorization": this.basicAuth
       };
     }
-  
+
     if (this.token) {
       options.headers = {
         "Authorization": 'Bearer ' + this.token
@@ -47,7 +60,7 @@ export class PrometheusDatasource {
     }
 
     return this.backendSrv.datasourceRequest(options);
-  }
+   }
 
   interpolateQueryExpr(value, variable, defaultFormatFn) {
     // if no multi or include all do not regexEscape
